@@ -13,6 +13,7 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
+        "spatie/laravel-data": "^4.15",
         "spatie/laravel-medialibrary": "^11.13",
         "spatie/laravel-tags": "^4.10"
     },
