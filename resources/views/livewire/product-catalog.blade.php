@@ -66,10 +66,15 @@
                         </select>
                     </div>
                 </div>
+                {{-- {{ dd($products) }} --}}
                 <div class="grid grid-cols-1 gap-5 my-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                    @for ($i = 0; $i <= 10; $i++)
-                        <x-single-product-card />
-                    @endfor
+                    @forelse ($products as $product)    
+                    <x-single-product-card :product="$product"/>
+                    @empty
+                        <div class="col-span-full dark:text-white mx-auto">
+                            <img src="{{ asset('404-not-found.jpg') }}" alt="" class="h-auto">
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
