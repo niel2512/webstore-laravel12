@@ -40,13 +40,19 @@ class ProductResource extends Resource
                 TextInput::make('sku')
                     ->label('SKU')
                     ->required()
+                    //tambahin ingnore true supaya ketika di edit dan tidak mengubah sku maka nilai nya tetap dari default
+                    ->unique(ignoreRecord:true) //validation unique error
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(ignoreRecord:true),
                 SpatieTagsInput::make('tags')
                     ->type('collection')
                     ->label('Collection'),
+                Textarea::make('description')
+                    ->label('Deskripsi Produk'),
+                    // ->columnSpanFull(),
                 TextInput::make('stock')
                     ->required()
                     ->label('Stok')
@@ -63,9 +69,6 @@ class ProductResource extends Resource
                     ->numeric()
                     ->suffix('Gram')
                     ->default(0),
-                Textarea::make('description')
-                    ->label('Deskripsi Produk')
-                    ->columnSpanFull(),
             ]);
     }
 
