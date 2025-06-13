@@ -6,6 +6,8 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -26,6 +28,11 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+                SpatieMediaLibraryFileUpload::make('cover')
+                    ->collection('cover'),
+                SpatieMediaLibraryFileUpload::make('gallery')
+                    ->collection('gallery')
+                    ->multiple(),
                 TextInput::make('name')
                     ->required()
                     ->label('Nama Produk')
@@ -37,6 +44,9 @@ class ProductResource extends Resource
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
+                SpatieTagsInput::make('tags')
+                    ->type('collection')
+                    ->label('Collection'),
                 TextInput::make('stock')
                     ->required()
                     ->label('Stok')
