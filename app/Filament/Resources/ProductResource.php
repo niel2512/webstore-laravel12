@@ -46,9 +46,6 @@ class ProductResource extends Resource
                 SpatieTagsInput::make('tags')
                     ->type('collection')
                     ->label('Collection'),
-                MarkdownEditor::make('description')
-                    ->label('Deskripsi Produk'),
-                    // ->columnSpanFull(),
                 TextInput::make('stock')
                     ->required()
                     ->label('Stok')
@@ -65,6 +62,9 @@ class ProductResource extends Resource
                     ->numeric()
                     ->suffix('Gram')
                     ->default(0),
+                MarkdownEditor::make('description')
+                    ->label('Deskripsi Produk')
+                    ->columnSpanFull(),
             ]);
     }
 
