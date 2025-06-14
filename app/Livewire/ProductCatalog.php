@@ -3,31 +3,22 @@ declare(strict_types=1); //mengaktifkan declare static types
 
 namespace App\Livewire;
 
+use App\Data\ProductCollectionData;
 use App\Data\ProductData;
 use App\Models\Product;
+use App\Models\Tag;
 use Livewire\Component;
 
 class ProductCatalog extends Component
 {
     public function render()
     {
+        $collection_result = Tag::query()->withType('collection')->withCount('Products')->get();
         $query = Product::paginate(3); //ORM hanya bertugas konek ke db
-        // $product = Product::first();
-        // dd($product);
-
-        // Contoh DTO yang connect ke database
-        // dd(new ProductData(
-        //     'Product Name',
-        //     'SKU',
-        //     'slug',
-        //     'desc',
-        //     10,
-        //     10.50,
-        //     100
-        // ));
-
+        
         // DTO yang hanya mempassing data tanpa konek ke database
         $products = ProductData::collect($query);
-        return view('livewire.product-catalog', compact('products'));
+        $collections = ProductCollectionData::collect($collection_result);
+        return view('livewire.product-catalog', compact('products', 'collections'));
     }
 }
