@@ -33,7 +33,8 @@
                                         {{ $item }}
                                     </label>
                                 </div>
-                                <span class="text-xs text-gray-800 dark:text-white font-loght">({{ rand(1, 99) }})</span>
+                                <span
+                                    class="text-xs text-gray-800 dark:text-white font-loght">({{ rand(1, 99) }})</span>
                             </div>
                         @endforeach
                     </div>
@@ -68,13 +69,17 @@
                 </div>
                 {{-- {{ dd($products) }} --}}
                 <div class="grid grid-cols-1 gap-5 my-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                    @forelse ($products as $product)    
-                    <x-single-product-card :product="$product"/>
+                    @forelse ($products as $product)
+                        <x-single-product-card :product="$product" />
                     @empty
                         <div class="col-span-full dark:text-white mx-auto">
                             <img src="{{ asset('404-not-found.jpg') }}" alt="" class="h-auto">
                         </div>
                     @endforelse
+                </div>
+                <div>
+                    {{-- Membuat Link Paginate dibawah konten --}}
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>
