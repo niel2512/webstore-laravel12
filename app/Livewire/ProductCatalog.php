@@ -11,7 +11,7 @@ class ProductCatalog extends Component
 {
     public function render()
     {
-        $query = Product::paginate(9); //ORM hanya bertugas konek ke db
+        $query = Product::paginate(3); //ORM hanya bertugas konek ke db
         // $product = Product::first();
         // dd($product);
 
