@@ -77,7 +77,7 @@ class ProductCatalog extends Component
         
         // DTO yang hanya mempassing data tanpa konek ke database
         // $products = ProductData::collect($query);
-        $products = ProductData::collect($query->paginate(9));
+        $products = ProductData::collect($query->paginate(3));
         $collections = ProductCollectionData::collect($collection_result);
         return view('livewire.product-catalog', compact('products', 'collections'));
     }
