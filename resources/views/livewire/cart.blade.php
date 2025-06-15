@@ -26,6 +26,8 @@
                                         <p class="px-3 py-2 mt-1 text-xl font-semibold text-black dark:text-white">
                                             {{ $item->product()->price_formatted }}
                                         </p>
+                                        {{-- Tombol Hapus Data CheckOut --}}
+                                        <livewire:cart-item-remove :product="$item->product()" />
                                     </div>
                                 </div>
                             </div>
