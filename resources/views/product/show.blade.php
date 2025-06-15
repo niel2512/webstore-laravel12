@@ -24,7 +24,7 @@
                     <span class="mt-2 text-2xl font-bold dark:text-blue-500">{{ $product->price_formatted }}</span>
                 </div>
                 <div>
-                    <livewire:add-to-cart />
+                    <livewire:add-to-cart :product="$product" />
                 </div>
                 <div>
                     <h3 class="font-semibold dark:text-white">Description</h3>
