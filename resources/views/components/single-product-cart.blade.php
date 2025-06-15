@@ -9,7 +9,7 @@
             <h3 class="text-lg font-bold text-gray-800 dark:text-white">
                 Product Name
             </h3>
-            <h2 class="text-sm text-gray-800">Ebook, Software Engineer, Web Developer</h2>
+            <h2 class="text-sm text-gray-800 dark:text-blue-500">Ebook, Software Engineer, Web Developer</h2>
             <div class="flex items-center gap-2 my-5">
 
                 <div x-data="{ quantity: 1 }" class="flex gap-2 items-centerm y-5">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <p class="px-3 py-2 mt-1 text-xl font-semibold text-black dark:text-black">
+                <p class="px-3 py-2 mt-1 text-xl font-semibold text-black dark:text-white">
                     Rp.123.456
                 </p>
 
