@@ -10,15 +10,10 @@ use Livewire\Component;
 class AddToCart extends Component
 {
     public int $quantity;
-
     public string $sku;
-
     public float $price;
-
     public int $stock;
-
     public int $weight;
-
     public string $label = 'Add To Cart';
 
     public function mount(ProductData $product, CartServiceInterface $cart)
@@ -50,9 +45,11 @@ class AddToCart extends Component
             weight : $this->weight
         ));
 
+        session()->flash('success', 'Product Added To Cart');
+
         $this->dispatch('cart-update');
 
-        // return redirect()->route('cart');
+        return redirect()->route('cart');
     }
 
     public function render()
