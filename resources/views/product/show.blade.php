@@ -1,5 +1,7 @@
 <x-layouts.app>
     <div class="container mx-auto max-w-[85rem] w-full px-4 sm:px-6 lg:px-8 py-10">
+        <a class="hidden md:inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg cursor-pointer gap-x-2 hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700"
+            href="{{ route('product-catalog') }}">Back</a>
         <div class="grid grid-cols-1 gap-10 my-5 md:grid-cols-10">
             <div class="grid grid-cols-1 gap-2 md:col-span-7">
                 <div class="w-full">
