@@ -16,7 +16,7 @@
     @stack('head')
 </head>
 
-<body>
+<body class="dark:bg-neutral-800 dark:border-neutral-700">
     <x-navigation />
 
     {{ $slot }}

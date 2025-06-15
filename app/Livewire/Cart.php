@@ -28,13 +28,13 @@ class Cart extends Component
 
     public function checkout()
     {
-        try {
-            ValidateCartStock::run();
-            return redirect()->route('checkout');
-        } catch (ValidationException $e) {
-            session()->flash('error', $e->getMessage());
-            return redirect()->route('cart');
-        }
+        return redirect()->route('checkout');
+        // try {
+        //     ValidateCartStock::run();
+        // } catch (ValidationException $e) {
+        //     session()->flash('error', $e->getMessage());
+        //     return redirect()->route('cart');
+        // }
     }
 
     public function render()

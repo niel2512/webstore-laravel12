@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Actions\ValidateCartStock;
 use App\Contract\CartServiceInterface;
+use App\Models\User;
 use App\Services\SessionCartService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\ValidationException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +26,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Model::unguard();
         Number::useCurrency('IDR');
+
+        // mendaftarkan Gate yang didefinisikan dengan nama is_stock_available
+        Gate::define('is_stock_available', function(User $user = null){
+            try {
+                ValidateCartStock::run();
+            } catch (ValidationException $e) {
+                session()->flash('error', $e->getMessage());
+                return false;
+            }
+        });
     }
 }
