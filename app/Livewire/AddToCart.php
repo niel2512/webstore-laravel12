@@ -49,6 +49,8 @@ class AddToCart extends Component
             price : $this->price,
             weight : $this->weight
         ));
+
+        $this->dispatch('cart-update');
     }
 
     public function render()
