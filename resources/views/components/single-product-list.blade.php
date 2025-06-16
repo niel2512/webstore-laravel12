@@ -10,7 +10,7 @@
                 {{ $cart_item->product()->name }}
             </h3>
             <h2 class="text-sm text-gray-500">{{ $cart_item->product()->category_tags }}</h2>
-            <p class="mt-1 text-sm text-black text-md dark:text-black">
+            <p class="mt-1 text-sm text-black text-md dark:text-white">
                 {{ $cart_item->product()->price_formatted }} x {{ $cart_item->quantity }}
             </p>
         </div>
