@@ -32,7 +32,12 @@ class AppServiceProvider extends ServiceProvider
         // mendaftarkan Gate yang didefinisikan dengan nama is_stock_available
         Gate::define('is_stock_available', function(User $user = null){
             try {
+                // Method ini dijalankan. Jika gagal, ia akan melempar exception.
                 ValidateCartStock::run();
+                // Jika kita berhasil mencapai baris ini, itu artinya tidak ada
+                // exception yang dilempar. Stok tersedia! Jadi, kita harus
+                // secara eksplisit mengatakan "YA, DIIZINKAN".
+                return true;
             } catch (ValidationException $e) {
                 session()->flash('error', $e->getMessage());
                 return false;
