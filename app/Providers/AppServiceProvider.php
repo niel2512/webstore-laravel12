@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Actions\ValidateCartStock;
 use App\Contract\CartServiceInterface;
 use App\Models\User;
+use App\Services\RegionQueryService;
 use App\Services\SessionCartService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
@@ -18,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Konfigurasi Inject
         $this->app->bind(CartServiceInterface::class, SessionCartService::class);
+        $this->app->bind(RegionQueryService::class, RegionQueryService::class);
     }
 
     /**
