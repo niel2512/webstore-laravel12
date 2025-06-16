@@ -130,9 +130,9 @@
             <div class="p-10">
                 <h1 class="mb-5 text-2xl font-light">Order Summary</h1>
                 <div>
-                    @for ($i = 1; $i < 5; $i++)
-                        <x-single-product-list />
-                    @endfor
+                    @foreach ($cart->items as $item)
+                        <x-single-product-list :cart_item="$item" />
+                    @endforeach
                 </div>
                 <div class="grid gap-5">
                     <!-- List Group -->
@@ -141,7 +141,7 @@
                             class="inline-flex items-center px-4 py-3 -mt-px text-sm text-gray-800 border border-gray-200 gap-x-2 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
                                 <span>Sub Total</span>
-                                <span>Rp123,456</span>
+                                <span>{{ data_get($this->summaries, 'sub_total_formatted') }}</span>
                             </div>
                         </li>
                         <li
@@ -151,14 +151,14 @@
                                     <span>Shipping (JNT YES)</span>
                                     <span class="text-xs">570 gram</span>
                                 </span>
-                                <span>Rp.123.123</span>
+                                <span>{{ data_get($this->summaries, 'shipping_total_formatted') }}</span>
                             </div>
                         </li>
                         <li
                             class="inline-flex items-center px-4 py-3 -mt-px text-sm font-semibold text-gray-800 border border-gray-200 gap-x-2 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
                                 <span>Total</span>
-                                <span>Rp123,456</span>
+                                <span>{{ data_get($this->summaries, 'grand_total_formatted') }}</span>
                             </div>
                         </li>
                     </ul>
