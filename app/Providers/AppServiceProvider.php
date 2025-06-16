@@ -7,6 +7,7 @@ use App\Contract\CartServiceInterface;
 use App\Models\User;
 use App\Services\RegionQueryService;
 use App\Services\SessionCartService;
+use App\Services\ShippingMethodService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         // Konfigurasi Inject
         $this->app->bind(CartServiceInterface::class, SessionCartService::class);
         $this->app->bind(RegionQueryService::class, RegionQueryService::class);
+        $this->app->bind(ShippingMethodService::class, ShippingMethodService::class);
     }
 
     /**

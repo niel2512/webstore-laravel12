@@ -102,6 +102,9 @@
                 <label for="af-shipping-method" class="inline-block text-sm font-medium dark:text-white">
                     Shipping Method
                 </label>
+                @foreach ($this->shipping_methods as $shipping)
+                    {{ dd($shipping) }}
+                @endforeach
                 <div class="mt-2 space-y-3">
                     <div class="grid space-y-2">
                         <div class="text-xs font-bold">

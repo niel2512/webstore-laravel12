@@ -30,8 +30,8 @@ class RegionQueryService {
 
   public function searchRegionByCode(string $code) : RegionData
   {
-    return RegionData::fromModel(
-      Region::where('code', $code)->first()
-    );
+    $region = Region::where('code', $code)->first();
+    // dd($region);
+    return RegionData::fromModel($region);
   }
 }
