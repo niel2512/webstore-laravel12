@@ -8,6 +8,7 @@ use App\Data\RegionData;
 use App\Data\ShippingData;
 use App\Services\RegionQueryService;
 use App\Services\ShippingMethodService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
 use Livewire\Component;
@@ -26,6 +27,10 @@ class Checkout extends Component
     public array $region_selector = [
         'keyword' => null,
         'region_selected' => null
+    ];
+
+    public array $shipping_selector = [
+        'shipping_method' => null
     ];
 
     public array $summaries = [
@@ -52,9 +57,9 @@ class Checkout extends Component
     {
         return [
             'data.full_name'    => ['required', 'min:3', 'max:255'],
-            'data.email'        => ['required','email', 'max:255'],
-            'data.phone'        => ['required', 'min:7','max:13'],
-            'data.address_line' => ['required', 'numeric','min:10','max:255'],
+            'data.email'        => ['required','lowercase','email', 'max:255'],
+            'data.phone'        => ['required','numeric','min:7','digits_between:12,15'],
+            'data.address_line' => ['required','min:10','max:255'],
             'data.destination_region_code' => ['required']
         ];
     }
@@ -127,7 +132,7 @@ class Checkout extends Component
     public function getShippingMethodsProperty(
         RegionQueryService $region_query,
         ShippingMethodService $shipping_service
-    ) : DataCollection
+    ) : DataCollection|Collection
     {
         if (! data_get($this->data, 'destination_region_code')) {
             return new DataCollection(ShippingData::class, []);
@@ -139,14 +144,14 @@ class Checkout extends Component
             $region_query->searchRegionByCode($origin_code),
             $region_query->searchRegionByCode(data_get($this->data, 'destination_region_code')),
             $this->cart
-        );
+        )->toCollection()->groupBy('service');
     }
 
     public function placeAnOrder()
     {
         $this->validate();
 
-        dd($this->data);
+        // dd($this->data);
     }
 
     public function render()

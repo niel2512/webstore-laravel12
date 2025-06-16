@@ -34,8 +34,8 @@ class OfflineShippingDriver implements ShippingDriverInterface
         'code'    => 'offline-flat-5',
         'courier' => 'Internal Courier',
         'service' => 'SameDay'
-      ]
-      ], DataCollection::class);
+      ],
+    ], DataCollection::class);
   }
 
   public function getRate(
