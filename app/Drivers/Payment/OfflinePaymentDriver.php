@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Drivers\Payment;
@@ -6,6 +7,7 @@ namespace App\Drivers\Payment;
 use App\Contract\PaymentDriverInterface;
 use App\Data\PaymentData;
 use App\Data\SalesOrderData;
+use App\Models\SalesOrder;
 use Spatie\LaravelData\DataCollection;
 
 class OfflinePaymentDriver implements PaymentDriverInterface
@@ -17,8 +19,8 @@ class OfflinePaymentDriver implements PaymentDriverInterface
     $this->driver = 'offline';
   }
 
-  /** @return DataCollection<PaymentData> */ 
-  public function getMethods() : DataCollection
+  /** @return DataCollection<PaymentData> */
+  public function getMethods(): DataCollection
   {
     return PaymentData::collect([
       PaymentData::from([
@@ -30,19 +32,23 @@ class OfflinePaymentDriver implements PaymentDriverInterface
           'account_holder_name' => 'Nathaniel Yusuf Langelo'
         ]
       ])
-        ], DataCollection::class);
+    ], DataCollection::class);
   }
 
-  public function process(SalesOrderData $sales_order) {
-
+  public function process(SalesOrderData $sales_order)
+  {
+    SalesOrder::where('trx_id', $sales_order->trx_id)
+      ->update([
+        'payment_payload' => ['key' => 'value']
+      ]);
   }
 
-  public function shouldShowPayNowButton(SalesOrderData $sales_order) : bool
+  public function shouldShowPayNowButton(SalesOrderData $sales_order): bool
   {
     return false;
   }
 
-  public function getRedirectUrl(SalesOrderData $sales_order) : ?string
+  public function getRedirectUrl(SalesOrderData $sales_order): ?string
   {
     return null;
   }
