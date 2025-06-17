@@ -57,9 +57,9 @@ class Checkout extends Component
 
     public function mount()
     {
-    //     dd(
-    //     Gate::inspect('is_stock_available')->allowed()
-    // );
+        //     dd(
+        //     Gate::inspect('is_stock_available')->allowed()
+        // );
         if (!Gate::inspect('is_stock_available')->allowed()) {
             return redirect()->route('cart');
         }
@@ -75,20 +75,49 @@ class Checkout extends Component
     {
         return [
             'data.full_name'    => ['required', 'min:3', 'max:255'],
-            'data.email'        => ['required','lowercase','email', 'max:255'],
-            'data.phone'        => ['required','numeric','min:7','digits_between:12,15'],
-            'data.address_line' => ['required','min:10','max:255'],
-            'data.destination_region_code' => ['required','exists:regions,code'],
+            'data.email'        => ['required', 'lowercase', 'email', 'max:255'],
+            'data.phone'        => ['required', 'numeric', 'min:7', 'digits_between:12,15'],
+            'data.address_line' => ['required', 'min:10', 'max:255'],
+            'data.destination_region_code' => ['required', 'exists:regions,code'],
             'data.shipping_hash' => ['required', new ValidShippingHash()],
             'data.payment_method_hash' => ['required', new ValidPaymentMethodHash],
+        ];
+    }
+    protected function messages()
+    {
+        return [
+            // Pesan Eror untuk Required
+            'data.full_name.required'    => 'Please Fill Your Full Name',
+            'data.email.required'        => 'Please Fill Your Email',
+            'data.phone.required'        => 'Please Fill Your Phone Number',
+            'data.address_line.required' => 'Please Fill Your Address',
+            'data.destination_region_code.required' => 'Please Fill Your Location',
+            'data.shipping_hash.required' => 'Please Fill Shipping Method',
+            'data.payment_method_hash.required' => 'Please Fill Your Payment',
+
+            // Pesan Eror untuk Min
+            'data.full_name.min'    => 'Your Name is Too Short. Please Fill Your Full Name Corectly',
+            'data.phone.min'    => 'Your Phone Number is Too Short. Please Fill Your Phone Number Corectly',
+            'data.address_line.min'    => 'Your Address is Too Short. Please Fill Your Full Address Corectly',
+
+            // Pesan Eror untuk Max
+            'data.full_name.max'    => 'Your Name is To Long',
+            'data.email.max'    => 'Are You Sure Your Email 255 character??',
+            'data.address_line.max'    => 'Are You Sure Your Address 255 character??',
+
+            // Pesan Eror untuk Lowercase
+            'data.email.lowercase'    => 'Please Fill Your Email In Lowercase',
+
+            // Pesan Eror untuk 12 dan 15 digit
+            'data.phone.digits_between'  => 'Your Phone Number must be between 12 and 15 digits.',
         ];
     }
 
     public function calculateTotal()
     {
-        data_set($this->summaries,'sub_total', $this->cart->total);
+        data_set($this->summaries, 'sub_total', $this->cart->total);
         data_set($this->summaries, 'sub_total_formatted', $this->cart->total_formatted);
-        
+
         $shipping_cost = $this->shippingMethod?->cost ?? 0;
         data_set($this->summaries, 'shipping_total', $shipping_cost);
         data_set($this->summaries, 'shipping_total_formatted', Number::currency($shipping_cost));
@@ -97,12 +126,12 @@ class Checkout extends Component
         data_set($this->summaries, 'grand_total', $grand_total);
         data_set($this->summaries, 'grand_total_formatted', Number::currency($grand_total));
     }
-    public function getCartProperty(CartServiceInterface $cart) : CartData
+    public function getCartProperty(CartServiceInterface $cart): CartData
     {
         return $cart->all();
     }
 
-    public function getRegionsProperty(RegionQueryService $query_service) : DataCollection
+    public function getRegionsProperty(RegionQueryService $query_service): DataCollection
     {
         // $data = [
         //     [
@@ -132,7 +161,7 @@ class Checkout extends Component
         );
     }
 
-    public function getRegionProperty(RegionQueryService $query_service) : ?RegionData
+    public function getRegionProperty(RegionQueryService $query_service): ?RegionData
     {
         $region_selected = data_get($this->region_selector, 'region_selected');
         if (!$region_selected) {
@@ -148,12 +177,11 @@ class Checkout extends Component
         data_set($this->data, 'destination_region_code', $value);
     }
 
-    /** @return DataCollection<ShippingData> */ 
+    /** @return DataCollection<ShippingData> */
     public function getShippingMethodsProperty(
         RegionQueryService $region_query,
         ShippingMethodService $shipping_service
-    ) : DataCollection|Collection
-    {
+    ): DataCollection|Collection {
         if (! data_get($this->data, 'destination_region_code')) {
             return new DataCollection(ShippingData::class, []);
         }
@@ -167,9 +195,9 @@ class Checkout extends Component
         )->toCollection()->groupBy('service');
     }
 
-    public function getShippingMethodProperty(ShippingMethodService $shipping_service) : ?ShippingData
+    public function getShippingMethodProperty(ShippingMethodService $shipping_service): ?ShippingData
     {
-        if (empty(data_get($this->data, 'shipping_hash')) || empty(data_get($this->data, 'destination_region_code'))){
+        if (empty(data_get($this->data, 'shipping_hash')) || empty(data_get($this->data, 'destination_region_code'))) {
             return null;
         }
         $data = $shipping_service->getShippingMethod(data_get($this->data, 'shipping_hash'));
@@ -188,7 +216,7 @@ class Checkout extends Component
         $this->calculateTotal();
     }
 
-    public function getPaymentMethodsProperty(PaymentMethodQueryService $query_service) : DataCollection
+    public function getPaymentMethodsProperty(PaymentMethodQueryService $query_service): DataCollection
     {
         return $query_service->getPaymentMethods();
     }
@@ -204,7 +232,7 @@ class Checkout extends Component
         $validated = $this->validate();
         // dd($validated, data_get($validated, 'shipping_hash'));
         $shipping_method = app(ShippingMethodService::class)->getShippingMethod(data_get($validated, 'data.shipping_hash'));
-        $payment_method = app(PaymentMethodQueryService::class)->getPaymentMethodByHash(data_get($validated,'data.payment_method_hash'));
+        $payment_method = app(PaymentMethodQueryService::class)->getPaymentMethodByHash(data_get($validated, 'data.payment_method_hash'));
 
         $checkout = CheckoutData::from([
             'customer' => CustomerData::from(data_get($validated, 'data')),

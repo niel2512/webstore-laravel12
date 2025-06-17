@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1); //mengaktifkan declare static types
 
 namespace App\Livewire;
@@ -41,6 +42,13 @@ class ProductCatalog extends Component
             'sort_by'               => 'in:newest,latest,price_asc,price_desc'
         ];
     }
+    protected function validationAttributes()
+    {
+        return [
+            'select_collections' => 'Collection',
+            'sort_by' => 'Sort By'
+        ];
+    }
 
     public function applyFilters()
     {
@@ -54,7 +62,7 @@ class ProductCatalog extends Component
         $this->select_collections = [];
         $this->search = '';
         $this->sort_by = 'newest';
-        
+
         $this->resetErrorBag();
         $this->resetPage();
     }
@@ -64,13 +72,13 @@ class ProductCatalog extends Component
         $collections    = ProductCollectionData::collect([]);
         $products       = ProductData::collect([]);
         // Early Return
-        if($this->getErrorBag()->isNotEmpty()) {
+        if ($this->getErrorBag()->isNotEmpty()) {
             return view('livewire.product-catalog', compact('products', 'collections'));
         }
 
         $collection_result = Tag::query()->withType('collection')->withCount('Products')->get();
         // $query = Product::paginate(3); //ORM hanya bertugas konek ke db
-        
+
         // Query untuk menampilkan link search= ketika user melakukan filter
         $query = Product::query();
         if ($this->search) {
@@ -80,13 +88,13 @@ class ProductCatalog extends Component
 
         // Filtering untuk Select Collections
         if (!empty($this->select_collections)) {
-            $query->whereHas('tags', function($query){
+            $query->whereHas('tags', function ($query) {
                 $query->whereIn('id', $this->select_collections);
             });
         }
 
         // Filtering untuk Sort By
-        switch($this->sort_by) {
+        switch ($this->sort_by) {
             case 'latest':
                 $query->oldest();
                 break;
@@ -95,11 +103,11 @@ class ProductCatalog extends Component
                 break;
             case 'price_desc':
                 $query->orderBy('price', 'desc');
-            deafult:
+                deafult:
                 $query->latest();
                 break;
         }
-        
+
         // DTO yang hanya mempassing data tanpa konek ke database
         // $products = ProductData::collect($query);
         $products = ProductData::collect($query->paginate(3));
