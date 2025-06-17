@@ -102,6 +102,10 @@
                 <label for="af-shipping-method" class="inline-block text-sm font-medium dark:text-white">
                     Shipping Method
                 </label>
+                @error('data.shipping_hash')
+                    <p class="mt-2 text-xs text-red-600" id="hs-validation-name-error-helper">
+                        {{ $message }}</p>
+                @enderror
                 {{-- @foreach ($this->shipping_methods as $shipping)
                     {{ dd($shipping) }}
                 @endforeach --}}
