@@ -36,7 +36,7 @@ class SalesOrderData extends Data
         public RegionData $origin,
         public RegionData $destination,
 
-        #[DataCollectionOf(SalesOrderItemData::class)] 
+        #[DataCollectionOf(SalesOrderItemData::class)]
         public DataCollection $items,
 
         public SalesShippingData $shipping,
@@ -55,10 +55,10 @@ class SalesOrderData extends Data
 
         $this->created_at_formatted = $created_at->translatedFormat('d F Y, H:i');
         $this->due_date_at_formatted = $due_date_at->translatedFormat('d F Y, H:i');
-     }
+    }
 
-     public static function fromModel(SalesOrder $sales_order) : self
-     {
+    public static function fromModel(SalesOrder $sales_order): self
+    {
         return new self(
             trx_id: $sales_order->trx_id,
             status: $sales_order->status,
@@ -104,8 +104,8 @@ class SalesOrderData extends Data
             sub_total: $sales_order->sub_total,
             shipping_cost: $sales_order->shipping_cost,
             total: $sales_order->total,
-            due_date_at: $sales_order->due_date_at,
+            due_date_at: Carbon::parse($sales_order->due_date_at),
             created_at: $sales_order->created_at
         );
-     }
+    }
 }
