@@ -194,10 +194,16 @@
                             class="inline-flex items-center px-4 py-3 -mt-px text-sm text-gray-800 border border-gray-200 gap-x-2 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
                                 <span class="flex flex-col">
-                                    <span>Shipping (JNT YES)</span>
-                                    <span class="text-xs">570 gram</span>
+                                    <span>{{ $this->shipping_method?->label ?? '-' }}</span>
+                                    <span class="text-xs">{{ $this->shipping_method?->weight ?? 0 }} gram</span>
                                 </span>
-                                <span>{{ data_get($this->summaries, 'shipping_total_formatted') }}</span>
+                                <span class="relative">{{ data_get($this->summaries, 'shipping_total_formatted') }}
+                                    <div wire:loading wire:target="shipping_selector.shipping_method"
+                                        class="animate-spin inline-block size-4 border-3 border-current border-t-transparent text-white rounded-full dark:text-white"
+                                        role="status" aria-label="loading">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </span>
                             </div>
                         </li>
                         <li
