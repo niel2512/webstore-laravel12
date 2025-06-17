@@ -12,7 +12,8 @@ class SalesOrder extends Model
     protected $with = ['items'];
 
     protected $casts = [
-        'payment_payload' => 'json'
+        'payment_payload' => 'json',
+        'due_date_at' => 'datetime'
     ];
 
     public function items() : HasMany

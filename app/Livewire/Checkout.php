@@ -11,6 +11,7 @@ use App\Data\ShippingData;
 use App\Rules\ValidPaymentHash;
 use App\Rules\ValidPaymentMethodHash;
 use App\Rules\ValidShippingHash;
+use App\Services\CheckoutService;
 use App\Services\PaymentMethodQueryService;
 use App\Services\RegionQueryService;
 use App\Services\ShippingMethodService;
@@ -198,7 +199,7 @@ class Checkout extends Component
         data_set($this->data, 'payment_method_hash', $value);
     }
 
-    public function placeAnOrder()
+    public function placeAnOrder(CartServiceInterface $cart)
     {
         $validated = $this->validate();
         // dd($validated, data_get($validated, 'shipping_hash'));
@@ -214,7 +215,12 @@ class Checkout extends Component
             'shipping' => $shipping_method,
             'payment' => $payment_method
         ]);
-        dd($checkout);
+        $service = app(CheckoutService::class);
+        $sales_order = $service->makeAnOrder($checkout);
+        $cart->clear();
+
+        return redirect()->route('order-confirmed', $sales_order->trx_id);
+        // dd($checkout);
         // dd($this->data);
     }
 
