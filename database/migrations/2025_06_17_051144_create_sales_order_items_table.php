@@ -16,6 +16,16 @@ return new class extends Migration
             // Semua data ini untuk mengisi SalesOrderItemData
             $table->id();
             $table->foreignIdFor(SalesOrder::class)->constrained();
+            $table->string('name');
+            $table->string('short_desc');
+            $table->string('sku');
+            $table->string('slug');
+            $table->text('description')->nullable();
+            $table->string('cover_url');
+            $table->integer('quantity');
+            $table->double('price', 11, 2);
+            $table->double('total', 11, 2);
+            $table->integer('weight');
             $table->timestamps();
         });
     }
