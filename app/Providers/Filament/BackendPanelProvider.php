@@ -57,6 +57,7 @@ class BackendPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugin(
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
