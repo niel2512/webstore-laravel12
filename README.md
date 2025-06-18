@@ -1,4 +1,4 @@
-# Webstore Laravel 12, Spatie & Livewire
+# 🛒 Webstore Laravel 12, Spatie & Livewire
 
 Sebuah proyek demonstrasi Webstore (Toko Online) modern yang dibangun menggunakan TALL Stack (TailwindCss v4, Alpine.js, Laravel, Livewire)  dengan teknologi terbaru dari ekosistem Laravel, termasuk Livewire 3, Filament 3, dan Laravel Reverb untuk fungsionalitas real-time.
 
