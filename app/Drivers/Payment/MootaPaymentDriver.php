@@ -26,14 +26,7 @@ class MootaPaymentDriver implements PaymentDriverInterface
   public function getMethods(): DataCollection
   {
     return PaymentData::collect([
-      PaymentData::from([
-        'driver' => $this->driver,
-        'method' => 'bni-bank-transfer',
-        'label' => '(Moota) Bank Transfer BNI',
-        'payload' => [
-          'account_id' => 'DZ4jA5vrjAo'
-        ]
-      ])
+      PaymentData::from(config('services.moota.accounts')),
     ], DataCollection::class);
   }
 
