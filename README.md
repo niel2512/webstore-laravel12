@@ -17,7 +17,7 @@ Sebuah proyek demonstrasi Webstore (Toko Online) modern yang dibangun menggunaka
 
 ## ✨ Teknologi yang Digunakan
 
-* **Backend:** [Laravel 11](https://laravel.com/)
+* **Backend:** [Laravel 12](https://laravel.com/)
 * **Frontend:** [Livewire 3](https://livewire.laravel.com/), [Alpine.js](https://alpinejs.dev/), [Tailwind CSS](https://tailwindcss.com/)
 * **Admin Panel:** [Filament 3](https://filamentphp.com/)
 * **Real-time & WebSockets:** [Laravel Reverb](https://laravel.com/docs/11.x/reverb)
