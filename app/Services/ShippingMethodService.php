@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Services;
@@ -8,6 +9,7 @@ use App\Data\CartData;
 use App\Data\RegionData;
 use App\Data\ShippingData;
 use App\Data\ShippingServiceData;
+use App\Drivers\Shipping\APIKurirShippingDriver;
 use App\Drivers\Shipping\OfflineShippingDriver;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\DataCollection;
@@ -19,34 +21,34 @@ class ShippingMethodService
   public function __construct()
   {
     $this->drivers = [
-      new OfflineShippingDriver()
+      new OfflineShippingDriver(),
+      new APIKurirShippingDriver()
     ];
   }
 
-  public function getDriver(ShippingServiceData $service) : ShippingDriverInterface
+  public function getDriver(ShippingServiceData $service): ShippingDriverInterface
   {
     return collect($this->drivers)
       ->first(fn(ShippingDriverInterface $shipping_driver) => $shipping_driver->driver === $service->driver);
   }
 
-  /** @return DataCollection<ShippingServiceData> */ 
-  public function getShippingServices() : DataCollection
+  /** @return DataCollection<ShippingServiceData> */
+  public function getShippingServices(): DataCollection
   {
     return collect($this->drivers)
       ->flatMap(fn(ShippingDriverInterface $driver) => $driver->getServices()->toCollection())
       ->pipe(fn($items) => ShippingServiceData::collect($items, DataCollection::class));
   }
 
-  /** @return DataCollection<ShippingData> */ 
+  /** @return DataCollection<ShippingData> */
   public function getShippingMethods(
     RegionData $origin,
     RegionData $destination,
     CartData $cart
-  ) : DataCollection
-  {
+  ): DataCollection {
     return $this->getShippingServices()
       ->toCollection()
-      ->map(function(ShippingServiceData $shipping_service) use ($origin, $destination, $cart) {
+      ->map(function (ShippingServiceData $shipping_service) use ($origin, $destination, $cart) {
         $shipping_data = $this->getDriver($shipping_service)
           ->getRate($origin, $destination, $cart, $shipping_service);
 
@@ -57,7 +59,7 @@ class ShippingMethodService
           key: "shipping_data:{$shipping_data->hash}",
           value: $shipping_data,
           ttl: now()->addMinutes(15) //time to live (ttl)
-        ); 
+        );
 
         return $shipping_data;
       })
@@ -65,7 +67,7 @@ class ShippingMethodService
       ->pipe(fn($items) => ShippingData::collect($items, DataCollection::class));
   }
 
-  public function getShippingMethod(string $hash) : ?ShippingData
+  public function getShippingMethod(string $hash): ?ShippingData
   {
     return Cache::get("shipping_data:{$hash}");
   }
