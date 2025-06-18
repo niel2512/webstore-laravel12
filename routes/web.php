@@ -23,10 +23,12 @@ Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/order-confirmed/{sales_order:trx_id}', SalesOrderDetail::class)->name('order-confirmed');
 Route::view('/page', 'pages.page')->name('page');
 
-Route::get('/mailable', function () {
-  return new ShippingReceiptNumberUpdatedMail(
-    SalesOrderData::from(
-      SalesOrder::latest()->first()
-    )
-  );
-});
+Route::webhooks('moota/callback');
+
+// Route::get('/mailable', function () {
+//   return new ShippingReceiptNumberUpdatedMail(
+//     SalesOrderData::from(
+//       SalesOrder::latest()->first()
+//     )
+//   );
+// });

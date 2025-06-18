@@ -9,6 +9,8 @@ use App\Data\SalesOrderItemData;
 use App\Events\ShippingReceiptNumberUpdateEvent;
 use App\Models\Product;
 use App\Models\SalesOrder;
+use App\States\SalesOrder\Pending;
+use App\States\SalesOrder\Progress;
 use Illuminate\Support\Facades\DB;
 
 class SalesOrderService
@@ -45,5 +47,15 @@ class SalesOrderService
         ]);
       });
     });
+  }
+
+  public function approvePaymentUsingTrxID(string $trx_id, float $total): void
+  {
+    $sales_order = SalesOrder::query()
+      ->where('trx_id', $trx_id)
+      ->where('total', $total)
+      ->where('status', Pending::class)
+      ->first();
+    $sales_order->status->transitionTo(Progress::class);
   }
 }
